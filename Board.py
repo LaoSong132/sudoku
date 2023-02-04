@@ -1,22 +1,24 @@
 import numpy as np
 from numpy.lib.stride_tricks import as_strided
 
+
 # create sudoku board, if m not none, it is copied
 class Sudoku_Board:
-    def __init__(self, m = None):
-        
+
+    def __init__(self, m=None):
+
         # m is a n_d_array or a list of lists
         if m is not None:
-            self._board = np.array(m, dtype = np.uint8)
+            self._board = np.array(m, dtype=np.uint8)
         else:
-            self._board = np.zeros((9, 9), dtype = np.uint8)
+            self._board = np.zeros((9, 9), dtype=np.uint8)
         self.squares = as_strided(self._board,
-                                  shape = (3, 3, 3, 3),
-                                  strides = (27, 3, 9, 1))
+                                  shape=(3, 3, 3, 3),
+                                  strides=(27, 3, 9, 1))
 
     # return true if all cells are filled
     def all_filled(self):
-        
+
         return np.count_nonzero(self._board) == 81
 
     # return the board object
@@ -29,7 +31,7 @@ class Sudoku_Board:
     def __getitem__(self, key):
         if self._valid_position(key):
             return self._board[key]
-        
+
         # if invalid position
         else:
             raise ValueError("Invalid position")
@@ -45,10 +47,8 @@ class Sudoku_Board:
         else:
             raise ValueError("Invalid position")
 
-
     def _valid_position(self, pos):
         return all(0 <= i <= 8 for i in pos)
-
 
     # return true if the board is a valid sudoku puzzle
     def valid(self):

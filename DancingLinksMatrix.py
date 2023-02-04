@@ -1,6 +1,7 @@
 import random
 import numpy as np
 
+
 # if the dancing links matrix is empty
 class EmptyDLMatrix(Exception):
     pass
@@ -27,6 +28,7 @@ class Cell:
     def __repr__(self):
         return f"Cell[{self.indexes}]"
 
+
 # column header cell which stores name and size
 class HeaderCell(Cell):
     __slots__ = ["name", "size", "is_first"]
@@ -44,13 +46,12 @@ class DancingLinksMatrix:
 
     # Create a Dancing Links Matrix
     def __init__(self, columns):
-        
+
         self.header = HeaderCell("<H>")
         self.header.is_first = True
         self.rows = self.cols = 0
         self.col_list = []
         self._create_column_headers(columns)
-
 
     # The column can be int or iterable
     # If column is int, columns are added to the matrix, named C + "N", where N = columns - 1
@@ -90,11 +91,10 @@ class DancingLinksMatrix:
         prev.R = self.header
         self.header.L = prev
 
-
     # Add a sparse row to the matrix
     # The row is in format [ind_0, ..., ind_n] where 0 <= ind_i < dl_matrix.ncols
-    # row is a sequence of integers indicating the 1s in the row.    
-    def add_sparse_row(self, row, already_sorted = False):
+    # row is a sequence of integers indicating the 1s in the row.
+    def add_sparse_row(self, row, already_sorted=False):
 
         # if end_add was already called
         if self.col_list is None:
@@ -173,12 +173,12 @@ class DancingLinksMatrix:
 
     def __str__(self):
         names = []
-        m = np.zeros((self.rows, self.cols), dtype = np.uint8)
+        m = np.zeros((self.rows, self.cols), dtype=np.uint8)
         rows, cols = set(), []
 
         for col in iterate_cell(self.header, 'R'):
             cols.append(col.indexes[1])
-            
+
             names.append(col.name)
 
             for cell in iterate_cell(col, 'D'):
@@ -194,7 +194,6 @@ class DancingLinksMatrix:
     # Covers the column c by removing the 1s in the column
     # also all the rows connected to them
     # c is column header of the column that has to be covered.
-
     def cover(c):
 
         # print("Cover column", c.name)
@@ -212,9 +211,8 @@ class DancingLinksMatrix:
     # Uncovers the column c by readding the 1s in the column
     # also all the rows connected to them.
     # c is the column header of the column that has to be uncovered.
-
     def uncover(c):
-        
+
         for i in iterate_cell(c, 'U'):
             for j in iterate_cell(i, 'L'):
                 j.C.size += 1
@@ -231,6 +229,7 @@ def iterate_cell(cell, direction):
 
 
 class MatrixDisplayer:
+
     def __init__(self, matrix):
         dic = {}
 
@@ -262,5 +261,5 @@ class MatrixDisplayer:
 
         for i in range(-1, self.rows * 2):
             for j in range(0, self.cols * 2):
-                print(m.get((i, j), " "), end = " ")
+                print(m.get((i, j), " "), end=" ")
             print()

@@ -8,16 +8,16 @@ from Board import Sudoku_Board
 
 def column_names():
     # 81, RiCj = j + 9i
-    for i, j in it.product(range(1, 10), repeat = 2):
+    for i, j in it.product(range(1, 10), repeat=2):
         yield f"R{i}C{j}"
     # 81, Ri#v = v + 9i
-    for i, j in it.product(range(1, 10), repeat = 2):
+    for i, j in it.product(range(1, 10), repeat=2):
         yield f"R{i}#{j}"
     # 81, Cj#v = v + 9j
-    for i, j in it.product(range(1, 10), repeat = 2):
+    for i, j in it.product(range(1, 10), repeat=2):
         yield f"C{i}#{j}"
     # 81, Bn#v = v + 9n
-    for i, j in it.product(range(1, 10), repeat = 2):
+    for i, j in it.product(range(1, 10), repeat=2):
         yield f"B{i}#{j}"
 
 
@@ -38,6 +38,7 @@ def compute_row(m, n, v):
 
 
 class GetFirstSol:
+
     def __init__(self):
         self.sol = None
 
@@ -58,6 +59,7 @@ class GetFirstSol:
 
 
 class CountSolutions:
+
     def __init__(self):
         self.count = 0
 
@@ -68,8 +70,8 @@ class CountSolutions:
 def read_from_file(file_path):
     test_file = {}
     with open(file_path) as f_in:
-        for m, line in enumerate(f_in, start = 1):
-            for n, char in enumerate(line.rstrip(), start = 1):
+        for m, line in enumerate(f_in, start=1):
+            for n, char in enumerate(line.rstrip(), start=1):
                 try:
                     test_file[m, n] = int(char)
                 except ValueError:
@@ -78,16 +80,18 @@ def read_from_file(file_path):
 
 
 def to_np(test_file):
-    matrix = np.zeros((9, 9), dtype = np.uint8)
+    matrix = np.zeros((9, 9), dtype=np.uint8)
 
     for ((m, n), v) in test_file.items():
         matrix[m - 1, n - 1] = v
 
     return matrix
 
+
 import sys
 
 filename = sys.argv[1]
+
 
 def main():
     matrix = DancingLinksMatrix(column_names())
@@ -99,7 +103,7 @@ def main():
     print("----------INITAL BOARD-----------")
     print(inital_board)
 
-    for i, j in it.product(range(1, 10), repeat = 2):
+    for i, j in it.product(range(1, 10), repeat=2):
         if (i, j) in test_file:
             row = compute_row(i, j, test_file[i, j])
             matrix.add_sparse_row(row, already_sorted=True)
@@ -121,12 +125,13 @@ def main():
         print("----------SOLUTION BOARD---------")
         print(board)
         print()
-        print("Is the board vaild:",board.valid())
+        print("Is the board vaild:", board.valid())
         print()
     except KeyboardInterrupt:
         pass
     finally:
         pass
+
 
 import time
 import tracemalloc
@@ -141,7 +146,7 @@ if __name__ == '__main__':
     main()
 
     run_time1 = (time.time() - start_time) * 1000
-    
+
     print("%s milliseconds" % run_time1)
     print()
 
@@ -153,8 +158,9 @@ if __name__ == '__main__':
 # test runs
 total_time = 0
 
+
 def avg_run_time(total_time, i):
-    
+
     for i in range(i):
 
         start_time = time.time()
@@ -171,10 +177,5 @@ def avg_run_time(total_time, i):
 
     print("average time for", (total_time / i), "milliseconds")
 
+
 # avg_run_time(total_time, 30)
-
-
-
-
-
-
